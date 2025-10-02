@@ -94,6 +94,16 @@ function parseRSS(xmlString, feedUrl) {
   const doc = parser.parseFromString(xmlString, "application/xml");
   const items = [];
 
+  const CLICKBAIT_PATTERNS = [
+    /충격/g,
+    /경악/g,
+    /이럴수가/g,
+    /결국/g,
+    /단독/g,
+    /\.\.\.보니/g,
+    /\?\!/g,
+  ];
+
   const entries = doc.querySelectorAll("item, entry");
 
   entries.forEach((entry) => {
@@ -105,6 +115,13 @@ function parseRSS(xmlString, feedUrl) {
     const guid = entry.querySelector("guid")?.textContent || link;
     const pubDate = entry.querySelector("pubDate, published")?.textContent;
 
+    let score = 0;
+    for (const pattern of CLICKBAIT_PATTERNS) {
+      if (pattern.test(title)) {
+        score -= 10;
+      }
+    }
+
     items.push({
       id: guid,
       title,
@@ -112,6 +129,7 @@ function parseRSS(xmlString, feedUrl) {
       publishedAt: pubDate ? new Date(pubDate).getTime() : Date.now(),
       feedUrl,
       read: false,
+      score: score, // Add score property
     });
   });
 
