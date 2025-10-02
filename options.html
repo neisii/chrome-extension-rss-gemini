@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Reader Options</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Options</h1>
+
+        <section>
+            <h2>Manage Feeds</h2>
+            <div id="add-feed-form">
+                <input type="url" id="feed-url-input" placeholder="Enter RSS/Atom feed URL" required>
+                <button id="add-feed-button">Add Feed</button>
+            </div>
+            <ul id="feed-list"></ul>
+        </section>
+
+        <section>
+            <h2>Import / Export</h2>
+            <div class="opml-actions">
+                <label for="opml-import-input">Import from OPML:</label>
+                <input type="file" id="opml-import-input" accept=".opml,.xml">
+                <button id="export-opml-button">Export to OPML</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>Settings</h2>
+            <div class="settings">
+                 <label>
+                    <input type="checkbox" id="notifications-enabled-toggle">
+                    Enable new article notifications
+                </label>
+            </div>
+        </section>
+
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

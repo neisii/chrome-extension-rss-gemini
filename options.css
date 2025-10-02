@@ -1,0 +1,88 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    font-size: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+#add-feed-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#feed-url-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#feed-list {
+    list-style: none;
+    padding: 0;
+}
+
+#feed-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+#feed-list li:last-child {
+    border-bottom: none;
+}
+
+#feed-list .remove-feed-button {
+    background-color: #dc3545;
+}
+
+#feed-list .remove-feed-button:hover {
+    background-color: #c82333;
+}
+
+.opml-actions, .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

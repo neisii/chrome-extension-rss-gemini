@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Feeds</h1>
+            <div class="controls">
+                <input type="search" id="search-input" placeholder="Search...">
+                <select id="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+                <label>
+                    <input type="checkbox" id="unread-only-toggle" checked>
+                    Unread only
+                </label>
+            </div>
+        </div>
+        <div id="feed-container" class="feed-container">
+            <p id="loading-state">Loading feeds...</p>
+            <p id="empty-state" style="display: none;">No feeds to show. Add some in the options page.</p>
+            <p id="error-state" style="display: none;">Error fetching feeds.</p>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
