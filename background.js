@@ -2,6 +2,13 @@ const FEED_URLS_KEY = "feedUrls";
 const FEEDS_CACHE_KEY = "feedsCache";
 const FETCH_ALARM_NAME = "fetch-feeds-alarm";
 
+// Import the Readability script
+try {
+  importScripts("./lib/Readability.js");
+} catch (e) {
+  console.error(e);
+}
+
 // --- Initialization ---
 chrome.runtime.onInstalled.addListener(async () => {
   console.log("RSS Reader extension installed.");
@@ -32,6 +39,19 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === FETCH_ALARM_NAME) {
     console.log("Alarm triggered: Fetching feeds...");
     await triggerFetch();
+  }
+});
+
+// --- Message Listeners ---
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "triggerFetch") {
+    console.log("Fetch triggered by message.");
+    triggerFetch();
+  } else if (request.action === "fetchArticle") {
+    fetchArticleContent(request.url)
+      .then((article) => sendResponse({ success: true, article }))
+      .catch((error) => sendResponse({ success: false, error: error.message }));
+    return true; // Indicates that the response is sent asynchronously
   }
 });
 
@@ -118,6 +138,26 @@ function parseRSS(xmlString, feedUrl) {
   return items;
 }
 
+async function fetchArticleContent(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const reader = new Readability(doc);
+    const article = reader.parse();
+    if (!article || !article.content) {
+      throw new Error("Failed to parse article content.");
+    }
+    return { title: article.title, content: article.content };
+  } catch (error) {
+    console.error("Failed to fetch or parse article:", url, error);
+    throw error;
+  }
+}
+
 // --- Badge Update ---
 async function updateBadge() {
   const { [FEEDS_CACHE_KEY]: cache } =
@@ -139,13 +179,5 @@ async function updateBadge() {
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === "local" && changes[FEEDS_CACHE_KEY]) {
     updateBadge();
-  }
-});
-
-// Listen for messages from other parts of the extension
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "triggerFetch") {
-    console.log("Fetch triggered by message.");
-    triggerFetch();
   }
 });
